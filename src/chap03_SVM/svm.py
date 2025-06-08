@@ -61,7 +61,7 @@ class SVM:
     def predict(self, x):
         """预测标签。"""
         score = np.dot(x, self.w) + self.b          # 计算得分
-        return np.where(score >= 0, 1, 0)  # 转换回{0, 1}标签
+        return np.where(score >= 0, 1, 0)           # 转换回{0, 1}标签
 
 
 if __name__ == '__main__':
