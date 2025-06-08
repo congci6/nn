@@ -77,7 +77,7 @@ def compute_loss(logits, labels):
 
 @tf.function
 def compute_accuracy(logits, labels):
-    predictions = tf.argmax(logits, axis=1)     # 获取预测标签
+    predictions = tf.argmax(logits, axis=1)                                         # 获取预测标签
     return tf.reduce_mean(tf.cast(tf.equal(predictions, labels), tf.float32))       # 计算准确率
 
 
@@ -97,7 +97,7 @@ def train_one_step(model, optimizer, x, y):
         accuracy: 训练准确率。
     """
     with tf.GradientTape() as tape:
-        logits = model(x)  # 前向传播，获取模型输出
+        logits = model(x)               # 前向传播，获取模型输出
         loss = compute_loss(logits, y)  # 计算损失
 
     # 计算梯度
