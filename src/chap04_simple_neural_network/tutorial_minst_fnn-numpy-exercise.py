@@ -56,8 +56,8 @@ class Matmul:
         W = self.mem['W']
 
         '''计算矩阵乘法的对应的梯度'''
-        grad_x = np.matmul(grad_y, W.T)# 计算输入x的梯度：将输出梯度grad_y通过权重矩阵W的转置进行反向传播
-        grad_W = np.matmul(x.T, grad_y)  # 执行矩形乘法运算，计算梯度
+        grad_x = np.matmul(grad_y, W.T)    # 计算输入x的梯度：将输出梯度grad_y通过权重矩阵W的转置进行反向传播
+        grad_W = np.matmul(x.T, grad_y)    # 执行矩形乘法运算，计算梯度
 
         return grad_x, grad_W
 
@@ -72,7 +72,7 @@ class Relu:
         # 保存输入 x，供反向传播使用
         self.mem['x'] = x
         return np.where(x > 0, x, np.zeros_like(x))
-    # ReLU激活函数：x>0时输出x，否则输出0
+        # ReLU激活函数：x>0时输出x，否则输出0
 
     def backward(self, grad_y):
         '''
