@@ -25,7 +25,7 @@ dot_num = 100
 # 从均值为3，标准差为1的高斯分布中采样x坐标，用于正样本
 x_p = np.random.normal(
     3.0, 1, dot_num
-) 
+)           
 # x和y坐标
 y_p = np.random.normal(6.0, 1, dot_num)
 # 标签为1
