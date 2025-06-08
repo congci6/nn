@@ -84,7 +84,7 @@ class RBM:
     
         # 请补全此处代码
         # 将数据展平为二维数组 [n_samples, n_observe]
-        data_flat = data.reshape(data.shape[0], -1)  
+        data_flat = data.reshape(data.shape[0], -1)     # 将数据展平为二维数组
         n_samples = data_flat.shape[0]  # 样本数量
 
         # 定义训练参数
@@ -95,10 +95,10 @@ class RBM:
        # 开始训练轮数
         for epoch in range(epochs):
             # 打乱数据顺序
-            np.random.shuffle(data_flat) # 使用小批量梯度下降法
-            for i in range(0, n_samples, batch_size):# 获取当前批次的数据
-                batch = data_flat[i:i + batch_size] # 将批次数据转换为 float64 类型，确保数值计算的精度
-                v0 = batch.astype(np.float64)  # 确保数据类型正确
+            np.random.shuffle(data_flat)                # 使用小批量梯度下降法
+            for i in range(0, n_samples, batch_size):   # 获取当前批次的数据
+                batch = data_flat[i:i + batch_size]     # 将批次数据转换为 float64 类型，确保数值计算的精度
+                v0 = batch.astype(np.float64)           # 确保数据类型正确
 
                 # 正相传播：从v0计算隐藏层激活概率
                 h0_prob = self._sigmoid(np.dot(v0, self.W) + self.b_h) 
@@ -119,7 +119,7 @@ class RBM:
                 # 更新参数
                 self.W += learning_rate * dW / batch_size                            # 更新权重矩阵
                 self.b_v += learning_rate * db_v / batch_size                        # 更新可见层偏置
-                self.b_h += learning_rate * db_h / batch_size                         # 更新隐藏层偏置
+                self.b_h += learning_rate * db_h / batch_size                        # 更新隐藏层偏置
 
     def sample(self):
         """从训练好的模型中采样生成新数据（Gibbs采样）"""
