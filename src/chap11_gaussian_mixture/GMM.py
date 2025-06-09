@@ -93,23 +93,24 @@ class GaussianMixtureModel:
         tol: float, 收敛阈值 (默认=1e-6)
         random_state: int, 随机种子 (可选)
     """
-    def __init__(self, n_components=3, max_iter=100, tol=1e-6):
-        
+    def __init__(self, n_components=3, max_iter=100, tol=1e-6 tol=1e-6, random_state=None):
         # 初始化模型参数
         self.n_components = n_components  # 高斯分布数量
         self.max_iter = max_iter          # EM算法最大迭代次数
         self.tol = tol                    # 收敛阈值
-        self.log_likelihoods = []  # 新增：存储每轮迭代的对数似然值
+        self.log_likelihoods = []         #存储每轮迭代的对数似然值
 
-    # 初始化随机数生成器
+        # 初始化随机数生成器
         self.rng = np.random.default_rng(random_state)
 
     def fit(self, X):
         """使用EM算法训练模型
-        
-        参数:
-            X: array-like, shape=(n_samples, n_features)
-               输入数据矩阵
+
+        EM算法流程：
+        1. 初始化模型参数（混合权重π、均值μ、协方差矩阵Σ）
+        2. 重复以下步骤直到收敛：
+           - E步：计算每个样本属于各高斯成分的后验概率（责任度）
+           - M步：基于后验概率更新模型参数
         """
         X = np.asarray(X)
         n_samples, n_features = X.shape
@@ -241,35 +242,43 @@ class GaussianMixtureModel:
 
 # 主程序
 if __name__ == "__main__":
-    # 生成混合高斯分布数据
-    X, y_true = generate_data()
+    # 1. 生成合成数据
+    print("生成混合高斯分布数据...")
+    X, y_true = generate_data(n_samples=1000)
+    print(f"生成数据形状: {X.shape}, 标签形状: {y_true.shape}")
     
-    # 训练GMM模型
-    gmm = GaussianMixtureModel(n_components=3)  # 创建GMM实例，指定聚类数为3
-    gmm.fit(X)  # 用数据X训练模型
-    y_pred = gmm.labels_  # 获取每个样本的聚类标签
+    # 2. 训练GMM模型
+    print("\n训练高斯混合模型...")
+    gmm = GaussianMixtureModel(n_components=3, random_state=42)
+    gmm.fit(X)
+    y_pred = gmm.labels_
+    print(f"完成训练，共进行{len(gmm.log_likelihoods)}次迭代")
     
-    # 绘制收敛曲线：对数似然随迭代次数的变化
+    # 3. 可视化收敛过程
+    print("\n绘制EM算法收敛曲线...")
     gmm.plot_convergence()
     
-    # 可视化结果
+    # 4. 可视化聚类结果
+    print("\n可视化聚类结果...")
     plt.figure(figsize=(12, 5))
     
-    # 左图：真实聚类结果
+    # 左图：真实聚类
     plt.subplot(1, 2, 1)
-    plt.scatter(X[:, 0], X[:, 1], c=y_true, cmap='viridis', s=10)
-    plt.title("真实聚类")
-    plt.xlabel("特征1")
-    plt.ylabel("特征2")
-    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.scatter(X[:, 0], X[:, 1], c=y_true, cmap='viridis', s=15, alpha=0.8)
+    plt.title("真实聚类", fontsize=12)
+    plt.xlabel("特征1", fontsize=10)
+    plt.ylabel("特征2", fontsize=10)
+    plt.grid(True, linestyle='--', alpha=0.5)
     
-    # 右图：GMM预测的聚类结果
+    # 右图：GMM预测聚类
     plt.subplot(1, 2, 2)
-    plt.scatter(X[:, 0], X[:, 1], c=y_pred, cmap='viridis', s=10)
-    plt.title("GMM预测的聚类")
-    plt.xlabel("特征1")
-    plt.ylabel("特征2")
-    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.scatter(X[:, 0], X[:, 1], c=y_pred, cmap='viridis', s=15, alpha=0.8)
+    plt.title("GMM预测聚类", fontsize=12)
+    plt.xlabel("特征1", fontsize=10)
+    plt.ylabel("特征2", fontsize=10)
+    plt.grid(True, linestyle='--', alpha=0.5)
     
-    plt.tight_layout()  # 自动调整子图布局
-    plt.show()  # 显示图形
+    plt.tight_layout()
+    plt.savefig('gmm_clustering_results.png', dpi=300)
+    plt.show()
+    print("程序执行完毕")
