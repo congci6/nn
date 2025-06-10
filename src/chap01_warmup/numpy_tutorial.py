@@ -116,6 +116,7 @@ print("输出:", a)
 print("第十一题：\n")
 
 x = np.array([1, 2])
+# 创建一个包含整数1和2的NumPy数组
 print("输出:", type(x))
 
 # 12. 执行 x = np.array([1.0, 2.0]) ，然后输出 x 的数据类类型
@@ -238,6 +239,8 @@ plt.grid(True, alpha=0.5)
 
 # 显示图例
 plt.legend()
+
+# 自动调整子图布局，优化图形显示效果
 plt.tight_layout()
 
 # 显示图像
